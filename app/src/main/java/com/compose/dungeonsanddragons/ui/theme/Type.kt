@@ -50,4 +50,10 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         lineHeight = 19.sp,
     ),
+    labelMedium = TextStyle(
+        fontSize = 15.sp,
+        fontFamily = Caudex,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 21.sp,
+    )
 )

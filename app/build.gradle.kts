@@ -72,6 +72,9 @@ dependencies {
     //Compose Foundation
     implementation(libs.androidx.foundation)
 
+    //Compose Constraint Layout
+    implementation(libs.androidx.constraintlayout.compose)
+
     //Retrofit
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
