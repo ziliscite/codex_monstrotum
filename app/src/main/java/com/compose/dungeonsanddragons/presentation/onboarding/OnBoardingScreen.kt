@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.compose.dungeonsanddragons.presentation.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexButton
 import com.compose.dungeonsanddragons.presentation.common.CodexTextButton
@@ -30,9 +31,12 @@ import com.compose.dungeonsanddragons.presentation.onboarding.components.OnBoard
 import com.compose.dungeonsanddragons.presentation.onboarding.components.PageIndicator
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(
+    event: (OnBoardingEvent) -> Unit
+) {
     ConstraintLayout(modifier = Modifier.fillMaxSize()) {
         val (pager, nav) = createRefs()
 
@@ -115,8 +119,9 @@ fun OnBoardingScreen() {
                 ) {
                     scope.launch {
                         // Last page, navigate to home screen
-                        if (pagerState.currentPage == 3) {
-                            // Navigate to home screen
+                        if (pagerState.currentPage == 2) {
+                            // Save entry
+                            event(OnBoardingEvent.SaveAppEntry)
                         } else {
                             // Navigate to the next screen
                             pagerState.animateScrollToPage(
@@ -134,7 +139,10 @@ fun OnBoardingScreen() {
 @Preview(showBackground = true)
 @Composable
 fun OnBoardingScreenPreview() {
+    val onBoardingViewModel : OnBoardingViewModel = hiltViewModel()
     DungeonsAndDragonsTheme {
-        OnBoardingScreen()
+        OnBoardingScreen {
+            onBoardingViewModel.onEvent(it)
+        }
     }
 }
