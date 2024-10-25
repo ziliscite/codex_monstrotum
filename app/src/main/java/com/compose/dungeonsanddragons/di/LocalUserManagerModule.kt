@@ -11,7 +11,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class LocalUserManagerModule {
-
     @Binds
     @Singleton
     abstract fun bindLocalUserManager(
