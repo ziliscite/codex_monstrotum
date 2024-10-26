@@ -32,6 +32,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Normal,
         lineHeight = 48.sp,
     ),
+    displayLarge = TextStyle(
+        fontSize = 42.sp,
+        fontFamily = Caudex,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 60.sp,
+    ),
     bodySmall = TextStyle(
         fontSize = 14.sp,
         fontFamily = Caudex,
@@ -43,6 +49,12 @@ val Typography = Typography(
         fontFamily = Caudex,
         fontWeight = FontWeight.Normal,
         lineHeight = 24.sp,
+    ),
+    bodyLarge = TextStyle(
+        fontSize = 18.sp,
+        fontFamily = Caudex,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 27.sp,
     ),
     labelSmall = TextStyle(
         fontSize = 13.sp,

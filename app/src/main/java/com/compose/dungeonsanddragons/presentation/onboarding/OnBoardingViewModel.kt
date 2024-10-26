@@ -2,7 +2,7 @@ package com.compose.dungeonsanddragons.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.compose.dungeonsanddragons.domain.usecases.AppEntryUseCases
+import com.compose.dungeonsanddragons.domain.usecases.appentry.AppEntryUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

@@ -7,6 +7,9 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.compose.dungeonsanddragons.presentation.home.HomeScreen
+import com.compose.dungeonsanddragons.presentation.home.HomeViewModel
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingScreen
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingViewModel
 
@@ -41,9 +44,11 @@ fun NavGraph(
             composable(
                 route = Route.CodexNavigatorScreen.route
             ) {
-                Text(
-                    text = "CodexNavigatorScreen"
-                )
+                val viewModel = hiltViewModel<HomeViewModel>()
+                val monsters = viewModel.monsters.collectAsLazyPagingItems()
+                HomeScreen(monsters) {
+
+                }
             }
         }
     }

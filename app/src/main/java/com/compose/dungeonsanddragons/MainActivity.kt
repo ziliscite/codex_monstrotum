@@ -27,11 +27,9 @@ class MainActivity : ComponentActivity() {
     @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // We wanna keep the splash screen visible until we
-        // load the the start navigation from data store preference
         installSplashScreen().apply {
             setKeepOnScreenCondition {
-                mainViewModel.splashCondition // if false, the splash screen will disappear
+                mainViewModel.splashCondition
             }
         }
 

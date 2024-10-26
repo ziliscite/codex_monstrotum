@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -58,8 +59,8 @@ fun OnBoardingScreen(
             }
         }
 
-        // Horizontal Pager that takes up the whole screen
-        HorizontalPager(
+        // Pager that takes up the whole screen
+        VerticalPager(
             state = pagerState,
             modifier = Modifier.constrainAs(pager) {
                 top.linkTo(parent.top)
