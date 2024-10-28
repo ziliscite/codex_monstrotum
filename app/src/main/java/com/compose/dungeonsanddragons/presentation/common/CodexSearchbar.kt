@@ -46,7 +46,6 @@ fun CodexSearchbar(
 
     // If state changed (isClicked), we'd be in this launched effect
     LaunchedEffect(isClicked) {
-//        Log.d("PRESSED", "PRESSED $isClicked")
         if (isClicked) {
             onClick.invoke()
         }

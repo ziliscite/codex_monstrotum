@@ -11,23 +11,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.compose.dungeonsanddragons.R
+import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 import com.compose.dungeonsanddragons.util.Constants
 
 @Composable
 fun MonsterImage(
-    monsterIndex: String, context: Context
+    modifier: Modifier = Modifier, index: String, context: Context
 ) {
     var imageUrl by remember {
-        mutableStateOf("https://raw.githubusercontent.com/theoperatore/dnd-monster-api/master/src/db/assets/${monsterIndex}.jpg")
+        mutableStateOf("https://raw.githubusercontent.com/theoperatore/dnd-monster-api/master/src/db/assets/${index}.jpg")
     }
-    val alternateUrl = Constants.BASE_URL + "/images/monsters/${monsterIndex}.png"
+    val alternateUrl = Constants.BASE_URL + "/images/monsters/${index}.png"
 
     AsyncImage(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = modifier
             .clip(MaterialTheme.shapes.small),
         model = ImageRequest.Builder(context)
             .data(imageUrl)
@@ -40,7 +42,18 @@ fun MonsterImage(
                 }
             )
             .build(),
-        contentDescription = monsterIndex,
+        contentDescription = index,
         contentScale = ContentScale.Crop
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MonsterImagePreview() {
+    DungeonsAndDragonsTheme {
+        MonsterImage(
+            index = "adult-gold-dragon",
+            context = LocalContext.current
+        )
+    }
 }

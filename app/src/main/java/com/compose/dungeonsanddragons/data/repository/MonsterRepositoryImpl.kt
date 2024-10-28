@@ -12,16 +12,19 @@ import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
 import com.compose.dungeonsanddragons.util.MonsterResult
 import com.compose.dungeonsanddragons.util.loadErrorResult
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MonsterRepositoryImpl @Inject constructor(
     private val monsterApi: MonsterApi
 ) : MonsterRepository{
-    override suspend fun getMonsterByIndex(index: String): MonsterResult<Monster> {
-        return try {
-            MonsterResult.Success(monsterApi.getMonsterByIndex(index))
+    override fun getMonsterByIndex(index: String): Flow<MonsterResult<Monster>> = flow {
+        emit(MonsterResult.Loading)
+        try {
+            val monster = monsterApi.getMonsterByIndex(index)
+            emit(MonsterResult.Success(monster))
         } catch (e: Exception) {
-            MonsterResult.Failed(e.loadErrorResult().message.toString())
+            emit(MonsterResult.Failed(e.loadErrorResult().message.toString()))
         }
     }
 

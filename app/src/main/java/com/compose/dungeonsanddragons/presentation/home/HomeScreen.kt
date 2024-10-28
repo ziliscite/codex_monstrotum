@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.paging.compose.LazyPagingItems
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
 import com.compose.dungeonsanddragons.presentation.Dimens
@@ -31,6 +31,7 @@ fun HomeScreen(
             .statusBarsPadding()
             .windowInsetsPadding(insets = WindowInsets.safeDrawing)
     ) {
+        // TODO(change this to a clickable icon)
         CodexSearchbar(
             modifier = Modifier.padding(Dimens.extraSmallPadding * 2),
             text = "",
@@ -43,7 +44,7 @@ fun HomeScreen(
         HorizontalDivider(
             modifier = Modifier
                 .padding(horizontal = Dimens.mediumPaddingOne),
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(Dimens.extraSmallPadding))

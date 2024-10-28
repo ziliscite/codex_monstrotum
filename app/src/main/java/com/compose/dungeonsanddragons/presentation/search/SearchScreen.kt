@@ -11,9 +11,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.compose.dungeonsanddragons.presentation.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexSearchbar
@@ -45,8 +45,8 @@ fun SearchScreen(
 
         HorizontalDivider(
             modifier = Modifier
-                .padding(horizontal = Dimens.mediumPaddingOne),
-            color = if (isSystemInDarkTheme()) Color.White else Color.Black
+                .padding(horizontal = Dimens.smallPaddingOne),
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(Dimens.extraSmallPadding))

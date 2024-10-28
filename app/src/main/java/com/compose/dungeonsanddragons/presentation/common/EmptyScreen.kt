@@ -35,9 +35,9 @@ import com.compose.dungeonsanddragons.R
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 
 @Composable
-fun EmptyScreen(error: LoadState.Error? = null) {
+fun EmptyScreen(error: LoadState.Error? = null, errorString: String? = null) {
     var message by remember {
-        mutableStateOf(parseErrorMessage(error = error))
+        mutableStateOf(if (error != null) parseErrorMessage(error) else parseErrorString(errorString))
     }
 
     var icon by remember {
@@ -107,6 +107,10 @@ fun EmptyContent(alphaAnim: Float, message: String, iconId: Int) {
 
 fun parseErrorMessage(error: LoadState.Error?): String {
     return error?.error?.message.toString()
+}
+
+fun parseErrorString(errorString: String?): String {
+    return errorString ?: "Something went wrong."
 }
 
 @Preview(showBackground = true)

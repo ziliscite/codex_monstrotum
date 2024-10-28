@@ -8,6 +8,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.compose.dungeonsanddragons.presentation.detail.DetailScreen
+import com.compose.dungeonsanddragons.presentation.detail.DetailViewModel
 import com.compose.dungeonsanddragons.presentation.home.HomeScreen
 import com.compose.dungeonsanddragons.presentation.home.HomeViewModel
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingScreen
@@ -66,6 +68,22 @@ fun NavGraph(
                 val viewModel = hiltViewModel<SearchViewModel>()
                 SearchScreen(
                     state = viewModel.searchQuery.value, navigate = {},
+                ) {
+                    viewModel.onEvent(it)
+                }
+            }
+        }
+
+        navigation(
+            route = Route.CodexNavigatorScreen.route,
+            startDestination = Route.DetailsScreen.route
+        ) {
+            composable(
+                route = Route.DetailsScreen.route
+            ) {
+                val viewModel = hiltViewModel<DetailViewModel>()
+                DetailScreen(
+                    index = "aboleth", state = viewModel.monster.value, navigateUp = {},
                 ) {
                     viewModel.onEvent(it)
                 }

@@ -26,7 +26,7 @@ import com.compose.dungeonsanddragons.presentation.Dimens
 fun Modifier.shimmerEffect() = composed {
     val transition = rememberInfiniteTransition(label = "")
     val alpha = transition.animateFloat(
-        initialValue = 0.1f, targetValue = 0.9f, animationSpec = infiniteRepeatable(
+        initialValue = 0.1f, targetValue = 0.8f, animationSpec = infiniteRepeatable(
             animation = tween(durationMillis = 1000),
             repeatMode = RepeatMode.Reverse
         ), label = ""

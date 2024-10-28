@@ -83,7 +83,7 @@ fun MonsterList(
 @Composable
 fun handlePagingResult(
     monsters: LazyPagingItems<ResultsItem>
-): Pair<Boolean, LoadState.Error?> {
+) : Pair<Boolean, LoadState.Error?> {
     val loadState = monsters.loadState
 
     val error = when {

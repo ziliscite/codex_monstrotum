@@ -51,10 +51,10 @@ val Typography = Typography(
         lineHeight = 24.sp,
     ),
     bodyLarge = TextStyle(
-        fontSize = 18.sp,
+        fontSize = 20.sp,
         fontFamily = Caudex,
         fontWeight = FontWeight.Normal,
-        lineHeight = 27.sp,
+        lineHeight = 30.sp,
     ),
     labelSmall = TextStyle(
         fontSize = 13.sp,
