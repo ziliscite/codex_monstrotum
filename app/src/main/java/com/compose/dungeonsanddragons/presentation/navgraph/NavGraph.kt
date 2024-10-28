@@ -12,6 +12,8 @@ import com.compose.dungeonsanddragons.presentation.home.HomeScreen
 import com.compose.dungeonsanddragons.presentation.home.HomeViewModel
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingScreen
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingViewModel
+import com.compose.dungeonsanddragons.presentation.search.SearchScreen
+import com.compose.dungeonsanddragons.presentation.search.SearchViewModel
 
 @Composable
 fun NavGraph(
@@ -46,8 +48,26 @@ fun NavGraph(
             ) {
                 val viewModel = hiltViewModel<HomeViewModel>()
                 val monsters = viewModel.monsters.collectAsLazyPagingItems()
-                HomeScreen(monsters) {
+                HomeScreen(monsters, navigateToSearch = {
+                    navController.navigate(Route.SearchScreen.route)
+                }) {
+                    navController.navigate(Route.DetailsScreen.route)
+                }
+            }
+        }
 
+        navigation(
+            route = Route.CodexNavigatorScreen.route,
+            startDestination = Route.SearchScreen.route
+        ) {
+            composable(
+                route = Route.SearchScreen.route
+            ) {
+                val viewModel = hiltViewModel<SearchViewModel>()
+                SearchScreen(
+                    state = viewModel.searchQuery.value, navigate = {},
+                ) {
+                    viewModel.onEvent(it)
                 }
             }
         }

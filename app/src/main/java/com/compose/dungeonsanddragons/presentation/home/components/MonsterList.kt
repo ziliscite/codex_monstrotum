@@ -26,7 +26,7 @@ import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 fun MonsterList(
     modifier: Modifier = Modifier,
     monsters: LazyPagingItems<ResultsItem>,
-    onClick: (ResultsItem) -> Unit
+    onClick: (String) -> Unit
 ) {
     val (isReady, isError) = handlePagingResult(monsters = monsters)
     val isFirstLoadComplete = remember {
@@ -68,7 +68,7 @@ fun MonsterList(
                                 .fillMaxWidth()
                                 .padding(Dimens.extraSmallPadding),
                             onClick = {
-                                onClick(monster)
+                                onClick(monster.index)
                             }
                         )
                     }

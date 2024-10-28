@@ -9,6 +9,7 @@ import com.compose.dungeonsanddragons.domain.usecases.appentry.SaveAppEntry
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsters
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsterByIndex
 import com.compose.dungeonsanddragons.domain.usecases.monster.MonsterUseCases
+import com.compose.dungeonsanddragons.domain.usecases.monster.SearchMonsters
 import com.compose.dungeonsanddragons.util.Constants
 import dagger.Module
 import dagger.Provides
@@ -59,7 +60,8 @@ object AppModule {
     ) : MonsterUseCases {
         return MonsterUseCases(
             getMonsters = GetMonsters(monsterRepository),
-            getMonsterByIndex = GetMonsterByIndex(monsterRepository)
+            getMonsterByIndex = GetMonsterByIndex(monsterRepository),
+            searchMonsters = SearchMonsters(monsterRepository)
         )
     }
 }

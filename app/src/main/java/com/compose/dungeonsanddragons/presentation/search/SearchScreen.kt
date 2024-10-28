@@ -1,4 +1,4 @@
-package com.compose.dungeonsanddragons.presentation.home
+package com.compose.dungeonsanddragons.presentation.search
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
@@ -14,17 +14,17 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.paging.compose.LazyPagingItems
-import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.compose.dungeonsanddragons.presentation.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexSearchbar
 import com.compose.dungeonsanddragons.presentation.home.components.MonsterList
+import com.compose.dungeonsanddragons.presentation.navgraph.Route
 
 @Composable
-fun HomeScreen(
-    monsters: LazyPagingItems<ResultsItem>,
-    navigateToSearch: () -> Unit,
-    navigateToDetail: (String) -> Unit
+fun SearchScreen(
+    state: SearchState,
+    navigate: (String) -> Unit,
+    event: (SearchEvent) -> Unit
 ) {
     Column(
         modifier = Modifier.fillMaxSize()
@@ -33,10 +33,13 @@ fun HomeScreen(
     ) {
         CodexSearchbar(
             modifier = Modifier.padding(Dimens.extraSmallPadding * 2),
-            text = "",
-            isReadOnly = true,
-            onClick = {
-                navigateToSearch()
+            text = state.searchQuery,
+            isReadOnly = false,
+            onQueryChange = {
+                event(SearchEvent.UpdateSearchQuery(it))
+            },
+            onSearch = {
+                event(SearchEvent.SearchMonsters)
             }
         )
 
@@ -48,10 +51,13 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(Dimens.extraSmallPadding))
 
-        MonsterList(
-            monsters = monsters,
-            modifier = Modifier.fillMaxSize(),
-            onClick = navigateToDetail
-        )
+        state.monsters?.let {
+            val monsters = it.collectAsLazyPagingItems()
+            MonsterList(
+                monsters = monsters,
+            ) {
+                navigate(Route.DetailsScreen.route)
+            }
+        }
     }
 }

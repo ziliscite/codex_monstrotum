@@ -1,5 +1,6 @@
 package com.compose.dungeonsanddragons.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -33,19 +34,21 @@ fun CodexSearchbar(
     modifier: Modifier = Modifier,
     text: String,
     isReadOnly: Boolean,
-    onQueryChange: (String) -> Unit,
-    onClick: (() -> Unit)? = null,
-    onSearch: () -> Unit,
+    onQueryChange: (String) -> Unit = {},
+    onClick: () -> Unit = {},
+    onSearch: () -> Unit = {},
 ) {
     val interactionSource = remember {
         MutableInteractionSource()
     }
+
     val isClicked = interactionSource.collectIsPressedAsState().value
 
     // If state changed (isClicked), we'd be in this launched effect
     LaunchedEffect(isClicked) {
+//        Log.d("PRESSED", "PRESSED $isClicked")
         if (isClicked) {
-            onClick?.invoke()
+            onClick.invoke()
         }
     }
 

@@ -9,5 +9,6 @@ import kotlinx.coroutines.flow.Flow
 // It should've been List<Monster>
 interface MonsterRepository{
     fun getMonsterList() : Flow<PagingData<ResultsItem>>
+    fun searchMonsters(query: String): Flow<PagingData<ResultsItem>>
     suspend fun getMonsterByIndex(index : String) : MonsterResult<Monster>
 }

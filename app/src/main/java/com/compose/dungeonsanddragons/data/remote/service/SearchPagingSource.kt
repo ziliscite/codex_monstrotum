@@ -1,41 +1,39 @@
 package com.compose.dungeonsanddragons.data.remote.service
 
-import android.util.Log
 import androidx.paging.PagingSource
-import androidx.paging.PagingSource.LoadResult
 import androidx.paging.PagingState
-import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
-import com.compose.dungeonsanddragons.util.MonsterResult
 import com.compose.dungeonsanddragons.util.loadErrorResult
 import com.compose.dungeonsanddragons.util.retryCall
-import com.google.gson.JsonParseException
-import kotlinx.coroutines.delay
-import retrofit2.HttpException
-import java.io.IOException
-import java.util.concurrent.TimeoutException
 
-// PagingSource for monsters
-class MonsterPagingSource(
-    private val monsterApi: MonsterApi
+class SearchPagingSource(
+    private val monsterApi: MonsterApi,
+    private val query: String
 ) : PagingSource<Int, ResultsItem>() {
     private val pageSize = 20
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ResultsItem> {
         val page = params.key ?: 1
-
         return try {
-            // Fetching the list of monsters
             val response = retryCall {
                 monsterApi.getAllMonsters()
             }
 
+            // Filter monsters based on the query
+            val monsters = response.results.filter {
+                it.name.contains(query, ignoreCase = true)
+            }
+
+            if (monsters.isEmpty()) {
+                throw NoSuchElementException("No monsters with the name '$query' found")
+            }
+
             // Calculate start and end index
             val startIndex = (page - 1) * pageSize
-            val endIndex = minOf(startIndex + pageSize, response.count)
+            val endIndex = minOf(startIndex + pageSize, monsters.size)
 
             // Check if startIndex is out of bounds
-            if (startIndex >= response.results.size) {
+            if (startIndex >= monsters.size) {
                 return LoadResult.Page(
                     data = emptyList(),
                     prevKey = if (page == 1) null else page - 1,
@@ -43,18 +41,12 @@ class MonsterPagingSource(
                 )
             }
 
-            // Get the sublist for the current page
-            val monstersPage = response.results.subList(startIndex, endIndex)
+            val monstersPage = monsters.subList(startIndex, endIndex)
 
-            if (monstersPage.isEmpty()) {
-                throw NoSuchElementException("No monsters found")
-            }
-
-            // Return the page result
             LoadResult.Page(
                 data = monstersPage,
                 prevKey = if (page == 1) null else page - 1,
-                nextKey = if (monstersPage.isEmpty()) null else page + 1
+                nextKey = if (page == monstersPage.size) null else page + 1
             )
         } catch (e: Exception) {
             LoadResult.Error(e.loadErrorResult())
