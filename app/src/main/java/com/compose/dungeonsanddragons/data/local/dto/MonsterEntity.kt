@@ -12,7 +12,6 @@ data class MonsterEntity(
     override val index: String,
 
     val url: String,
-    val image: String,
 
     val size: String,
     override val name: String,
@@ -37,6 +36,4 @@ data class MonsterEntity(
     val damageImmunities: List<String>,
     val damageVulnerabilities: List<String>,
     val damageResistances: List<String>,
-
-    val subtype: String,
 ) : MonsterItem

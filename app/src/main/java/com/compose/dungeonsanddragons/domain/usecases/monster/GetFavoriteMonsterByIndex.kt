@@ -4,10 +4,10 @@ import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.local.room.MonsterDao
 import kotlinx.coroutines.flow.Flow
 
-class GetFavoriteMonsters (
+class GetFavoriteMonsterByIndex (
     private val monsterDao: MonsterDao
 ) {
-    operator fun invoke(): Flow<List<MonsterEntity>> {
-        return monsterDao.getMonsters()
+    operator fun invoke(index: String): Flow<MonsterEntity> {
+        return monsterDao.getMonsterByIndex(index)
     }
 }

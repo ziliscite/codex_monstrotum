@@ -12,6 +12,7 @@ import com.compose.dungeonsanddragons.domain.usecases.appentry.AppEntryUseCases
 import com.compose.dungeonsanddragons.domain.usecases.appentry.ReadAppEntry
 import com.compose.dungeonsanddragons.domain.usecases.appentry.SaveAppEntry
 import com.compose.dungeonsanddragons.domain.usecases.monster.DeleteMonster
+import com.compose.dungeonsanddragons.domain.usecases.monster.GetFavoriteMonsterByIndex
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetFavoriteMonsters
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsters
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsterByIndex
@@ -75,6 +76,7 @@ object AppModule {
             getFavoriteMonsters = GetFavoriteMonsters(monsterDao),
             upsertMonster = UpsertMonster(monsterDao),
             deleteMonster = DeleteMonster(monsterDao),
+            getFavoriteMonsterByIndex = GetFavoriteMonsterByIndex(monsterDao)
         )
     }
 
@@ -100,7 +102,7 @@ object AppModule {
             context,
             MonsterDatabase::class.java,
             Constants.DATABASE_NAME
-        ).addTypeConverter(converters).build()
+        ).fallbackToDestructiveMigration().addTypeConverter(converters).build()
     }
 
     @Provides

@@ -6,5 +6,6 @@ data class MonsterUseCases(
     val searchMonsters: SearchMonsters,
     val upsertMonster: UpsertMonster,
     val deleteMonster: DeleteMonster,
-    val getFavoriteMonsters: GetFavoriteMonsters
+    val getFavoriteMonsters: GetFavoriteMonsters,
+    val getFavoriteMonsterByIndex: GetFavoriteMonsterByIndex
 )

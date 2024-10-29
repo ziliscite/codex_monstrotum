@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.dummyMonster
@@ -23,7 +24,7 @@ import java.util.Locale
 @Composable
 fun MonsterProfile(
     modifier: Modifier = Modifier,
-    monster: Monster
+    monster: MonsterEntity
 ) {
     Column(
         modifier = modifier
@@ -71,12 +72,12 @@ fun MonsterProfile(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MonsterProfilePreview() {
-    DungeonsAndDragonsTheme {
-        MonsterProfile(
-            monster = dummyMonster
-        )
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MonsterProfilePreview() {
+//    DungeonsAndDragonsTheme {
+//        MonsterProfile(
+//            monster = dummyMonster
+//        )
+//    }
+//}

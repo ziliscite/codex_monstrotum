@@ -108,7 +108,6 @@ fun Monster.toEntity() = MonsterEntity(
     type = type,
     size = size,
     alignment = alignment,
-    image = image,
     wisdom = wisdom,
     intelligence = intelligence,
     charisma = charisma,
@@ -124,5 +123,4 @@ fun Monster.toEntity() = MonsterEntity(
     url = url,
     xp = xp,
     hitPointsRoll = hitPointsRoll,
-    subtype = subtype,
 )

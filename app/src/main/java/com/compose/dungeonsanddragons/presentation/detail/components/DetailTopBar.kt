@@ -26,6 +26,7 @@ import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailTopBar(
+    isBookmarked: Boolean = false,
     onShareClick: () -> Unit,
     onBackClick: () -> Unit,
     onBookmarkClick: () -> Unit
@@ -50,7 +51,7 @@ fun DetailTopBar(
         actions = {
             IconButton(onBookmarkClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    painter = painterResource(id = if (isBookmarked) R.drawable.baseline_bookmark_24 else R.drawable.ic_bookmark),
                     contentDescription = null
                 )
             }

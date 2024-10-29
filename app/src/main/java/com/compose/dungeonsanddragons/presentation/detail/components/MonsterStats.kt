@@ -22,6 +22,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.compose.dungeonsanddragons.R
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.dummyMonster
@@ -70,7 +71,7 @@ fun MonsterStat(
 @Composable
 fun MonsterStats(
     modifier: Modifier = Modifier,
-    monster: Monster
+    monster: MonsterEntity
 ) {
     Column(
         modifier = modifier
@@ -110,10 +111,10 @@ fun MonsterStats(
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun MonsterStatsPreview() {
-    DungeonsAndDragonsTheme {
-        MonsterStats(monster = dummyMonster)
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//fun MonsterStatsPreview() {
+//    DungeonsAndDragonsTheme {
+//        MonsterStats(monster = dummyMonster)
+//    }
+//}

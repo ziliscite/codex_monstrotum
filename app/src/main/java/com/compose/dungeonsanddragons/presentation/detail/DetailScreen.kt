@@ -2,7 +2,6 @@ package com.compose.dungeonsanddragons.presentation.detail
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -20,11 +19,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
-import com.compose.dungeonsanddragons.data.remote.dto.Monster
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
+import com.compose.dungeonsanddragons.data.remote.dto.toEntity
 import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.EmptyScreen
 import com.compose.dungeonsanddragons.presentation.common.MonsterImage
@@ -46,25 +45,41 @@ fun DetailScreen(
     val context = LocalContext.current
 
     LaunchedEffect(index) {
-        event(DetailEvent.GetMonster(index = index))
+        event(DetailEvent.GetFavoriteMonster(index = index))
+
+        if (state.favoriteMonster == null) {
+            event(DetailEvent.GetMonster(index = index))
+        }
     }
 
-    when (val monsterResult = state.monster) {
-        is MonsterResult.Success -> {
-            val monster = monsterResult.data
-            DetailContent(
-                modifier = modifier,
-                monster = monster,
-                navigateUp = navigateUp,
-                event = event,
-                context = context
-            )
-        }
-        is MonsterResult.Failed -> {
-            EmptyScreen(errorString = monsterResult.error)
-        }
-        is MonsterResult.Loading -> {
-            DetailShimmerEffect()
+    if (state.favoriteMonster != null) {
+        DetailContent(
+            modifier = modifier,
+            monster = state.favoriteMonster,
+            isBookmarked = true,
+            navigateUp = navigateUp,
+            event = event,
+            context = context
+        )
+    } else {
+        when (val monsterResult = state.monster) {
+            is MonsterResult.Success -> {
+                val monster = monsterResult.data.toEntity()
+                DetailContent(
+                    modifier = modifier,
+                    monster = monster,
+                    isBookmarked = false,
+                    navigateUp = navigateUp,
+                    event = event,
+                    context = context
+                )
+            }
+            is MonsterResult.Failed -> {
+                EmptyScreen(errorString = monsterResult.error)
+            }
+            is MonsterResult.Loading -> {
+                DetailShimmerEffect()
+            }
         }
     }
 }
@@ -72,7 +87,8 @@ fun DetailScreen(
 @Composable
 private fun DetailContent(
     modifier: Modifier = Modifier,
-    monster: Monster,
+    monster: MonsterEntity,
+    isBookmarked: Boolean = false,
     navigateUp: () -> Unit,
     event: (DetailEvent) -> Unit,
     context: Context
@@ -85,6 +101,7 @@ private fun DetailContent(
             .verticalScroll(rememberScrollState()),
     ) {
         DetailTopBar(
+            isBookmarked = isBookmarked,
             onShareClick = {
                 Intent(Intent.ACTION_SEND).also {
                     it.putExtra(Intent.EXTRA_TEXT, Constants.BASE_URL + monster.index)
@@ -95,7 +112,7 @@ private fun DetailContent(
                 }
             },
             onBookmarkClick = {
-                event(DetailEvent.SaveArticle)
+                event(DetailEvent.UpsertDeleteMonster(monster))
             },
             onBackClick = navigateUp
         )
