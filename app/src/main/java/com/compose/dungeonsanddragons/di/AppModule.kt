@@ -1,5 +1,9 @@
 package com.compose.dungeonsanddragons.di
 
+import android.app.Application
+import androidx.room.Room
+import com.compose.dungeonsanddragons.data.local.room.MonsterDao
+import com.compose.dungeonsanddragons.data.local.room.MonsterDatabase
 import com.compose.dungeonsanddragons.data.remote.service.MonsterApi
 import com.compose.dungeonsanddragons.domain.manager.LocalUserManager
 import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
@@ -63,5 +67,25 @@ object AppModule {
             getMonsterByIndex = GetMonsterByIndex(monsterRepository),
             searchMonsters = SearchMonsters(monsterRepository)
         )
+    }
+
+    @Provides
+    @Singleton
+    fun provideMonsterDatabase(
+        context: Application
+    ) : MonsterDatabase{
+        return Room.databaseBuilder(
+            context,
+            MonsterDatabase::class.java,
+            Constants.DATABASE_NAME
+        ).build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideMonsterDao(
+        database: MonsterDatabase
+    ) : MonsterDao {
+        return database.monsterDao
     }
 }

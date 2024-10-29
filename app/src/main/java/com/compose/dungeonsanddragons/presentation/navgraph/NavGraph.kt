@@ -83,7 +83,7 @@ fun NavGraph(
             ) {
                 val viewModel = hiltViewModel<DetailViewModel>()
                 DetailScreen(
-                    index = "aboleth", state = viewModel.monster.value, navigateUp = {},
+                    index = "adult-red-dragon", state = viewModel.monster.value, navigateUp = {},
                 ) {
                     viewModel.onEvent(it)
                 }

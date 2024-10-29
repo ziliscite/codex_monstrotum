@@ -21,7 +21,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.compose.dungeonsanddragons.R
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 
 fun Modifier.shimmerEffect() = composed {
     val transition = rememberInfiniteTransition(label = "")

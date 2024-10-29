@@ -1,6 +1,5 @@
 package com.compose.dungeonsanddragons.presentation.home
 
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
@@ -16,7 +15,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.paging.compose.LazyPagingItems
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexSearchbar
 import com.compose.dungeonsanddragons.presentation.home.components.MonsterList
 

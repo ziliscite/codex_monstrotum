@@ -23,7 +23,7 @@ import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
 import com.compose.dungeonsanddragons.data.remote.dto.Senses
 import com.compose.dungeonsanddragons.data.remote.dto.Speed
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.MonsterImage
 
 @Composable

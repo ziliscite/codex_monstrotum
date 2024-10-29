@@ -16,7 +16,7 @@ import androidx.compose.ui.zIndex
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.LoadState
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CardShimmerEffect
 import com.compose.dungeonsanddragons.presentation.common.CodexSnackbar
 import com.compose.dungeonsanddragons.presentation.common.EmptyScreen

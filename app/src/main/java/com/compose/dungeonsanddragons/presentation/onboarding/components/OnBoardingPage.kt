@@ -23,7 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.compose.dungeonsanddragons.R
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.onboarding.Page
 import com.compose.dungeonsanddragons.presentation.onboarding.pages
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme

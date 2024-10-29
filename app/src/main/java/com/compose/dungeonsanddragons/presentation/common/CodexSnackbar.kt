@@ -5,7 +5,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.Modifier
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 import kotlinx.coroutines.launch
 

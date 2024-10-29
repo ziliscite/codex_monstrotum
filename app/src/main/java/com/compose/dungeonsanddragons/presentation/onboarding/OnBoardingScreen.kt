@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -25,14 +24,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.compose.dungeonsanddragons.presentation.Dimens
+import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexButton
 import com.compose.dungeonsanddragons.presentation.common.CodexTextButton
 import com.compose.dungeonsanddragons.presentation.onboarding.components.OnBoardingPage
 import com.compose.dungeonsanddragons.presentation.onboarding.components.PageIndicator
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @Composable
 fun OnBoardingScreen(
