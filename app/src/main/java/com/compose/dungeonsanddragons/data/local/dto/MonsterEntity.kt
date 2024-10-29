@@ -1,18 +1,21 @@
 package com.compose.dungeonsanddragons.data.local.dto
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.compose.dungeonsanddragons.util.MonsterItem
 
-@Entity
+@Entity(tableName = "monsterentity")
 data class MonsterEntity(
     @PrimaryKey
-    val id: String,
+    @ColumnInfo(name = "id")
+    override val index: String,
 
     val url: String,
     val image: String,
 
     val size: String,
-    val name: String,
+    override val name: String,
     val alignment: String,
     val type: String,
 
@@ -36,4 +39,4 @@ data class MonsterEntity(
     val damageResistances: List<String>,
 
     val subtype: String,
-)
+) : MonsterItem

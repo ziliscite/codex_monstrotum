@@ -1,4 +1,4 @@
-package com.compose.dungeonsanddragons.presentation.home.components
+package com.compose.dungeonsanddragons.presentation.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,12 +15,43 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.zIndex
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.LoadState
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
 import com.compose.dungeonsanddragons.util.Dimens
-import com.compose.dungeonsanddragons.presentation.common.CardShimmerEffect
-import com.compose.dungeonsanddragons.presentation.common.CodexSnackbar
-import com.compose.dungeonsanddragons.presentation.common.EmptyScreen
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
+
+@Composable
+fun MonsterList(
+    modifier: Modifier = Modifier,
+    monsters: List<MonsterEntity>,
+    onClick: (String) -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        LazyVerticalGrid(
+            columns = GridCells.Fixed(2),
+            modifier = modifier
+                .padding(Dimens.extraSmallPadding)
+                .fillMaxSize()
+        ) {
+            items(count = monsters.size) {
+                monsters[it].let { monster ->
+                    MonsterCard(
+                        monster = monster,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(Dimens.extraSmallPadding),
+                        onClick = {
+                            onClick(monster.index)
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
 
 @Composable
 fun MonsterList(

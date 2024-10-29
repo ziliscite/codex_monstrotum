@@ -10,7 +10,8 @@ import com.compose.dungeonsanddragons.domain.usecases.monster.MonsterUseCases
 import com.compose.dungeonsanddragons.util.MonsterResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,18 +21,18 @@ class DetailViewModel @Inject constructor (
     private val _monster = mutableStateOf(DetailState(monster = MonsterResult.Loading))
     val monster: State<DetailState> = _monster
 
-    fun onEvent(event: DetailEvent) { viewModelScope.launch {
+    fun onEvent(event: DetailEvent) {
         when (event) {
             is DetailEvent.GetMonster -> {
-                getMonster(event.index).collect{
-                    _monster.value = _monster.value.copy(monster = it)
-                }
+                getMonster(event.index).onEach {
+                    _monster.value = monster.value.copy(monster = it)
+                }.launchIn(viewModelScope)
             }
             is DetailEvent.SaveArticle -> {
                 // TODO: Save monster to database
             }
         }
-    }}
+    }
 
     private fun getMonster(index: String): Flow<MonsterResult<Monster>> {
         return monsterUseCases.getMonsterByIndex(index)

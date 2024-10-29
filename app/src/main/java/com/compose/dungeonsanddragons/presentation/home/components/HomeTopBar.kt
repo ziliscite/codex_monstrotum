@@ -1,11 +1,8 @@
-package com.compose.dungeonsanddragons.presentation.detail.components
+package com.compose.dungeonsanddragons.presentation.home.components
 
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.background
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -18,45 +15,39 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.compose.dungeonsanddragons.R
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun DetailTopBar(
-    onShareClick: () -> Unit,
-    onBackClick: () -> Unit,
-    onBookmarkClick: () -> Unit
+fun HomeTopBar(
+    onSearchClick: () -> Unit,
+    onMenuClick: () -> Unit
 ) {
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
-        title = {},
+        title = {
+            Text(
+                text = "Codex Monstrous",
+                style = MaterialTheme.typography.titleLarge
+            )
+        },
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = Color.Transparent,
             scrolledContainerColor = Color.Transparent,
             navigationIconContentColor = MaterialTheme.colorScheme.onBackground,
             actionIconContentColor = MaterialTheme.colorScheme.onBackground
         ),
-        navigationIcon = {
-            IconButton(onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = null
-                )
-            }
-        },
         actions = {
-            IconButton(onBookmarkClick) {
+            IconButton(onSearchClick) {
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_bookmark),
+                    imageVector = Icons.Default.Search,
                     contentDescription = null
                 )
             }
-            IconButton(onShareClick) {
+            IconButton(onMenuClick) {
                 Icon(
-                    imageVector = Icons.Default.Share,
+                    imageVector = Icons.Default.Menu,
                     contentDescription = null
                 )
             }
@@ -64,17 +55,13 @@ fun DetailTopBar(
     )
 }
 
-@Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun DetailTopBarPreview() {
+@Preview(showBackground = true)
+fun HomeTopBarPreview() {
     DungeonsAndDragonsTheme {
-        Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
-            DetailTopBar(
-                onShareClick = {},
-                onBackClick = {},
-                onBookmarkClick = {}
-            )
-        }
+        HomeTopBar(
+            onSearchClick = {},
+            onMenuClick = {}
+        )
     }
 }

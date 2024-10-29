@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.compose.dungeonsanddragons.R
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.util.Dimens
-import com.compose.dungeonsanddragons.presentation.home.components.dummyMonster
+import com.compose.dungeonsanddragons.presentation.common.dummyMonster
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 
 @Composable

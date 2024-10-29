@@ -1,5 +1,6 @@
 package com.compose.dungeonsanddragons.data.remote.dto
 
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.google.gson.annotations.SerializedName
 
 data class Monster(
@@ -20,7 +21,7 @@ data class Monster(
 	val senses: Senses,
 
 	@field:SerializedName("challenge_rating")
-	val challengeRating: Int,
+	val challengeRating: Double,
 
 	@field:SerializedName("type")
 	val type: String,
@@ -99,4 +100,29 @@ data class Monster(
 
 	@field:SerializedName("actions")
 	val actions: List<ActionsItem>
+)
+
+fun Monster.toEntity() = MonsterEntity(
+    index = index,
+    name = name,
+    type = type,
+    size = size,
+    alignment = alignment,
+    image = image,
+    wisdom = wisdom,
+    intelligence = intelligence,
+    charisma = charisma,
+    dexterity = dexterity,
+    strength = strength,
+    constitution = constitution,
+    languages = languages,
+    damageResistances = damageResistances,
+    damageImmunities = damageImmunities,
+    damageVulnerabilities = damageVulnerabilities,
+    hitPoints = hitPoints,
+    hitDice = hitDice,
+    url = url,
+    xp = xp,
+    hitPointsRoll = hitPointsRoll,
+    subtype = subtype,
 )

@@ -1,5 +1,6 @@
 package com.compose.dungeonsanddragons.data.repository
 
+import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -22,8 +23,10 @@ class MonsterRepositoryImpl @Inject constructor(
         emit(MonsterResult.Loading)
         try {
             val monster = monsterApi.getMonsterByIndex(index)
+            Log.d("MonsterUseCase", "Successfully fetched monster: ${monster.name}")
             emit(MonsterResult.Success(monster))
         } catch (e: Exception) {
+            Log.e("MonsterUseCase", "Error fetching monster", e)
             emit(MonsterResult.Failed(e.loadErrorResult().message.toString()))
         }
     }

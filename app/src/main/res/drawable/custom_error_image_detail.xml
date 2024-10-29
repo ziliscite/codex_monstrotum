@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Background layer -->
-    <item android:width="200dp" android:height="300dp">
+    <item android:width="500dp" android:height="500dp">
         <shape android:shape="rectangle">
             <solid android:color="#000000" />
         </shape>
@@ -10,7 +10,7 @@
     <!-- Centered icon layer -->
     <item
         android:drawable="@drawable/baseline_broken_image_24"
-        android:width="100dp"
-        android:height="100dp"
+        android:width="200dp"
+        android:height="200dp"
         android:gravity="center" />
 </layer-list>

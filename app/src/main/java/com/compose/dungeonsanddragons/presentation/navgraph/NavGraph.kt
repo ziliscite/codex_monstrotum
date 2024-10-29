@@ -1,15 +1,18 @@
 package com.compose.dungeonsanddragons.presentation.navgraph
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.compose.dungeonsanddragons.presentation.detail.DetailScreen
 import com.compose.dungeonsanddragons.presentation.detail.DetailViewModel
+import com.compose.dungeonsanddragons.presentation.favorite.FavoriteScreen
+import com.compose.dungeonsanddragons.presentation.favorite.FavoriteViewModel
 import com.compose.dungeonsanddragons.presentation.home.HomeScreen
 import com.compose.dungeonsanddragons.presentation.home.HomeViewModel
 import com.compose.dungeonsanddragons.presentation.onboarding.OnBoardingScreen
@@ -52,40 +55,52 @@ fun NavGraph(
                 val monsters = viewModel.monsters.collectAsLazyPagingItems()
                 HomeScreen(monsters, navigateToSearch = {
                     navController.navigate(Route.SearchScreen.route)
-                }) {
-                    navController.navigate(Route.DetailsScreen.route)
+                }) { monsterIndex ->
+                    navController.navigate(Route.DetailsScreen.route + "/$monsterIndex")
                 }
+            }
+        }
+
+        composable(
+            route = Route.SearchScreen.route
+        ) {
+            val viewModel = hiltViewModel<SearchViewModel>()
+            SearchScreen(
+                state = viewModel.searchQuery.value, navigate = { monsterIndex ->
+                    navController.navigate(Route.DetailsScreen.route + "/$monsterIndex")
+                }
+            ) {
+                viewModel.onEvent(it)
+            }
+        }
+
+        composable(
+            route = Route.RouteWithArgs.route,
+            arguments = listOf(navArgument("monsterIndex") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val viewModel = hiltViewModel<DetailViewModel>()
+            val monsterIndex = backStackEntry.arguments?.getString("monsterIndex") ?: return@composable
+            DetailScreen(
+                index = monsterIndex,
+                state = viewModel.monster.value,
+                navigateUp = { navController.navigateUp() }
+            ) {
+                viewModel.onEvent(it)
             }
         }
 
         navigation(
             route = Route.CodexNavigatorScreen.route,
-            startDestination = Route.SearchScreen.route
+            startDestination = Route.FavouritesScreen.route
         ) {
             composable(
-                route = Route.SearchScreen.route
+                route = Route.FavouritesScreen.route
             ) {
-                val viewModel = hiltViewModel<SearchViewModel>()
-                SearchScreen(
-                    state = viewModel.searchQuery.value, navigate = {},
+                val viewModel = hiltViewModel<FavoriteViewModel>()
+                FavoriteScreen(
+                    state = viewModel.state.value,
                 ) {
-                    viewModel.onEvent(it)
-                }
-            }
-        }
-
-        navigation(
-            route = Route.CodexNavigatorScreen.route,
-            startDestination = Route.DetailsScreen.route
-        ) {
-            composable(
-                route = Route.DetailsScreen.route
-            ) {
-                val viewModel = hiltViewModel<DetailViewModel>()
-                DetailScreen(
-                    index = "adult-red-dragon", state = viewModel.monster.value, navigateUp = {},
-                ) {
-                    viewModel.onEvent(it)
+                    navController.navigate(it)
                 }
             }
         }

@@ -1,6 +1,8 @@
 package com.compose.dungeonsanddragons.presentation.detail
 
+import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +19,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
@@ -41,76 +45,83 @@ fun DetailScreen(
 ) {
     val context = LocalContext.current
 
-    val monster = isMonsterReady(monster = state.monster)
-
-    if (monster == null) {
+    LaunchedEffect(index) {
         event(DetailEvent.GetMonster(index = index))
-    } else {
-        Column(
-            modifier = modifier
-                .padding(horizontal = Dimens.smallPaddingOne)
-                .statusBarsPadding()
-                .windowInsetsPadding(insets = WindowInsets.safeDrawing)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            DetailTopBar(
-                onShareClick = {
-                    Intent(Intent.ACTION_SEND).also {
-                        it.putExtra(Intent.EXTRA_TEXT, Constants.BASE_URL + monster.index)
-                        it.type = "text/plain"
-                        if (it.resolveActivity(context.packageManager) != null) {
-                            context.startActivity(it)
-                        }
-                    }
-                },
-                onBookmarkClick = {
-                    event(DetailEvent.SaveArticle)
-                },
-                onBackClick = navigateUp
+    }
+
+    when (val monsterResult = state.monster) {
+        is MonsterResult.Success -> {
+            val monster = monsterResult.data
+            DetailContent(
+                modifier = modifier,
+                monster = monster,
+                navigateUp = navigateUp,
+                event = event,
+                context = context
             )
-
-            // Image section at the top
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .aspectRatio(1f)
-                    .clip(RoundedCornerShape(Dimens.extraSmallPadding))
-            ) {
-                MonsterImage(
-                    modifier = Modifier.fillMaxSize(),
-                    index = monster.index,
-                    context = context,
-                )
-            }
-
-            Spacer(modifier = Modifier.height(Dimens.smallPaddingOne))
-
-            // Monster name and affiliation
-            MonsterProfile(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
-
-            Spacer(modifier = Modifier.height(Dimens.smallPaddingOne))
-
-            // Stats section
-            MonsterStats(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
-//            MonsterStats(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
-//            MonsterStats(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
+        }
+        is MonsterResult.Failed -> {
+            EmptyScreen(errorString = monsterResult.error)
+        }
+        is MonsterResult.Loading -> {
+            DetailShimmerEffect()
         }
     }
 }
 
 @Composable
-private fun isMonsterReady(monster: MonsterResult<Monster>): Monster? {
-    return when(monster) {
-        is MonsterResult.Success -> {
-            monster.data
+private fun DetailContent(
+    modifier: Modifier = Modifier,
+    monster: Monster,
+    navigateUp: () -> Unit,
+    event: (DetailEvent) -> Unit,
+    context: Context
+) {
+    Column(
+        modifier = modifier
+            .padding(horizontal = Dimens.smallPaddingOne)
+            .statusBarsPadding()
+            .windowInsetsPadding(insets = WindowInsets.safeDrawing)
+            .verticalScroll(rememberScrollState()),
+    ) {
+        DetailTopBar(
+            onShareClick = {
+                Intent(Intent.ACTION_SEND).also {
+                    it.putExtra(Intent.EXTRA_TEXT, Constants.BASE_URL + monster.index)
+                    it.type = "text/plain"
+                    if (it.resolveActivity(context.packageManager) != null) {
+                        context.startActivity(it)
+                    }
+                }
+            },
+            onBookmarkClick = {
+                event(DetailEvent.SaveArticle)
+            },
+            onBackClick = navigateUp
+        )
+
+        // Image section at the top
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .aspectRatio(1f)
+                .clip(RoundedCornerShape(Dimens.extraSmallPadding))
+        ) {
+            MonsterImage(
+                modifier = Modifier.fillMaxSize(),
+                index = monster.index,
+                context = context,
+                card = false
+            )
         }
-        is MonsterResult.Failed -> {
-            EmptyScreen(errorString = monster.error)
-            null
-        }
-        is MonsterResult.Loading -> {
-            DetailShimmerEffect()
-            null
-        }
+        Spacer(modifier = Modifier.height(Dimens.smallPaddingOne))
+
+        // Monster name and affiliation
+        MonsterProfile(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
+
+        Spacer(modifier = Modifier.height(Dimens.smallPaddingOne))
+
+        // Stats section
+        MonsterStats(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
     }
 }

@@ -15,6 +15,9 @@ interface MonsterDao {
     @Query("SELECT * FROM monsterentity")
     fun getMonsters(): Flow<List<MonsterEntity>>
 
+    @Query("SELECT * FROM monsterentity where id = :index")
+    fun getMonsterByIndex(index: String): Flow<MonsterEntity>
+
     @Query("DELETE FROM monsterentity where id = :index")
     suspend fun deleteMonster(index: String)
 }

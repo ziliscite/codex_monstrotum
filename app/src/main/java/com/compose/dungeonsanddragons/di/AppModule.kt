@@ -2,6 +2,7 @@ package com.compose.dungeonsanddragons.di
 
 import android.app.Application
 import androidx.room.Room
+import com.compose.dungeonsanddragons.data.local.room.Converters
 import com.compose.dungeonsanddragons.data.local.room.MonsterDao
 import com.compose.dungeonsanddragons.data.local.room.MonsterDatabase
 import com.compose.dungeonsanddragons.data.remote.service.MonsterApi
@@ -10,11 +11,15 @@ import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
 import com.compose.dungeonsanddragons.domain.usecases.appentry.AppEntryUseCases
 import com.compose.dungeonsanddragons.domain.usecases.appentry.ReadAppEntry
 import com.compose.dungeonsanddragons.domain.usecases.appentry.SaveAppEntry
+import com.compose.dungeonsanddragons.domain.usecases.monster.DeleteMonster
+import com.compose.dungeonsanddragons.domain.usecases.monster.GetFavoriteMonsters
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsters
 import com.compose.dungeonsanddragons.domain.usecases.monster.GetMonsterByIndex
 import com.compose.dungeonsanddragons.domain.usecases.monster.MonsterUseCases
 import com.compose.dungeonsanddragons.domain.usecases.monster.SearchMonsters
+import com.compose.dungeonsanddragons.domain.usecases.monster.UpsertMonster
 import com.compose.dungeonsanddragons.util.Constants
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -60,25 +65,42 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMonsterUseCases(
-        monsterRepository: MonsterRepository
+        monsterRepository: MonsterRepository,
+        monsterDao: MonsterDao
     ) : MonsterUseCases {
         return MonsterUseCases(
             getMonsters = GetMonsters(monsterRepository),
             getMonsterByIndex = GetMonsterByIndex(monsterRepository),
-            searchMonsters = SearchMonsters(monsterRepository)
+            searchMonsters = SearchMonsters(monsterRepository),
+            getFavoriteMonsters = GetFavoriteMonsters(monsterDao),
+            upsertMonster = UpsertMonster(monsterDao),
+            deleteMonster = DeleteMonster(monsterDao),
         )
     }
 
     @Provides
     @Singleton
+    fun provideGson(): Gson {
+        return Gson()
+    }
+
+    @Provides
+    @Singleton
+    fun provideConverters(gson: Gson): Converters {
+        return Converters(gson)
+    }
+
+    @Provides
+    @Singleton
     fun provideMonsterDatabase(
-        context: Application
+        context: Application,
+        converters: Converters
     ) : MonsterDatabase{
         return Room.databaseBuilder(
             context,
             MonsterDatabase::class.java,
             Constants.DATABASE_NAME
-        ).build()
+        ).addTypeConverter(converters).build()
     }
 
     @Provides

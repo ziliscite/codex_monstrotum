@@ -5,7 +5,10 @@ sealed class Route(
 ) {
     data object OnBoardingScreen : Route("onBoardingScreen")
     data object HomeScreen : Route("homeScreen")
+
     data object DetailsScreen : Route("detailsScreen")
+    data object RouteWithArgs : Route("detailsScreen/{monsterIndex}")
+
     data object SearchScreen : Route("searchScreen")
     data object FavouritesScreen : Route("favouritesScreen")
 

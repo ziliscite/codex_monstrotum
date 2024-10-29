@@ -16,7 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.util.Dimens
-import com.compose.dungeonsanddragons.presentation.home.components.dummyMonster
+import com.compose.dungeonsanddragons.presentation.common.dummyMonster
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 import java.util.Locale
 
@@ -62,6 +62,7 @@ fun MonsterProfile(
                         if (it.isLowerCase()) it.titlecase(Locale.ROOT) else it.toString()
                     }
                 },
+                maxLines = 1,
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.8f)
             )

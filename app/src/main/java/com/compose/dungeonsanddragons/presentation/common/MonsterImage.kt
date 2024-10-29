@@ -1,10 +1,13 @@
 package com.compose.dungeonsanddragons.presentation.common
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,24 +24,29 @@ import com.compose.dungeonsanddragons.util.Constants
 
 @Composable
 fun MonsterImage(
-    modifier: Modifier = Modifier, index: String, context: Context
+    modifier: Modifier = Modifier,
+    index: String,
+    context: Context,
+    card: Boolean = true
 ) {
     var imageUrl by remember {
         mutableStateOf("https://raw.githubusercontent.com/theoperatore/dnd-monster-api/master/src/db/assets/${index}.jpg")
     }
     val alternateUrl = Constants.BASE_URL + "/images/monsters/${index}.png"
+    var isAlternateUrlUsed by remember { mutableStateOf(false) }
 
     AsyncImage(
-        modifier = modifier
-            .clip(MaterialTheme.shapes.small),
+        modifier = modifier.clip(MaterialTheme.shapes.small),
         model = ImageRequest.Builder(context)
             .data(imageUrl)
-            .error(R.drawable.custom_error_image)
+            .error(if (card) R.drawable.custom_error_image else R.drawable.custom_error_image_detail)
             .crossfade(true)
             .listener(
                 onError = { _, _ ->
-                    // Switch to alternate URL on error
-                    imageUrl = alternateUrl
+                    if (!isAlternateUrlUsed) {
+                        imageUrl = alternateUrl
+                        isAlternateUrlUsed = true
+                    }
                 }
             )
             .build(),

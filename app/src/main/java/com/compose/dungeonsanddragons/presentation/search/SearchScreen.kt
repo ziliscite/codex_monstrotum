@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.compose.dungeonsanddragons.util.Dimens
 import com.compose.dungeonsanddragons.presentation.common.CodexSearchbar
-import com.compose.dungeonsanddragons.presentation.home.components.MonsterList
+import com.compose.dungeonsanddragons.presentation.common.MonsterList
 import com.compose.dungeonsanddragons.presentation.navgraph.Route
 
 @Composable
@@ -42,21 +42,14 @@ fun SearchScreen(
             }
         )
 
-        HorizontalDivider(
-            modifier = Modifier
-                .padding(horizontal = Dimens.smallPaddingOne),
-            color = MaterialTheme.colorScheme.onBackground
-        )
-
         Spacer(modifier = Modifier.height(Dimens.extraSmallPadding))
 
         state.monsters?.let {
             val monsters = it.collectAsLazyPagingItems()
             MonsterList(
                 monsters = monsters,
-            ) {
-                navigate(Route.DetailsScreen.route)
-            }
+                onClick = navigate
+            )
         }
     }
 }

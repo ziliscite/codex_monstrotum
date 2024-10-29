@@ -1,4 +1,4 @@
-package com.compose.dungeonsanddragons.presentation.home.components
+package com.compose.dungeonsanddragons.presentation.common
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,11 +24,11 @@ import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
 import com.compose.dungeonsanddragons.data.remote.dto.Senses
 import com.compose.dungeonsanddragons.data.remote.dto.Speed
 import com.compose.dungeonsanddragons.util.Dimens
-import com.compose.dungeonsanddragons.presentation.common.MonsterImage
+import com.compose.dungeonsanddragons.util.MonsterItem
 
 @Composable
-fun MonsterCard(
-    monster: ResultsItem,
+fun <T: MonsterItem> MonsterCard(
+    monster: T,
     modifier: Modifier = Modifier,
     onClick: () -> Unit
 ) {
@@ -84,7 +84,7 @@ val dummyMonster = Monster(
         passivePerception = 14,
         truesight = "10 ft."
     ),
-    challengeRating = 5,
+    challengeRating = 5.0,
     type = "Dragon",
     legendaryActions = emptyList(),
     speed = Speed(
