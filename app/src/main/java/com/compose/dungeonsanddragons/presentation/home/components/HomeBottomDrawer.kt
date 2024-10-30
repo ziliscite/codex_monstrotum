@@ -17,6 +17,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -46,23 +47,22 @@ fun HomeBottomDrawer(
                 .padding(16.dp),
             verticalArrangement = Arrangement.Bottom
         ) {
-            Text(
-                "Menu Options",
-                style = MaterialTheme.typography.titleLarge,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
-            // Add your menu items here
-            MenuItemButton(
-                icon = Icons.Default.Settings,
-                text = "Settings",
-                onClick = { /* Handle settings click */ }
-            )
-            MenuItemButton(
-                icon = Icons.Default.Info,
-                text = "About",
-                onClick = { /* Handle about click */ }
-            )
-            // Add more menu items as needed
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Change Layout",
+                    style = MaterialTheme.typography.bodyLarge
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Switch(
+                    checked = false,
+                    onCheckedChange = { TODO("Implement a switch to change layout (and save to preferences)") }
+                )
+            }
         }
     }
 }
