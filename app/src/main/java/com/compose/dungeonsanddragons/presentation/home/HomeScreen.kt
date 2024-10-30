@@ -32,16 +32,11 @@ fun HomeScreen(
 
     Box(
         modifier = Modifier.fillMaxSize()
-        .statusBarsPadding()
-        .windowInsetsPadding(insets = WindowInsets.safeDrawing)
     ) {
-        // Your main content here
         Column {
             HomeTopBar(
                 onSearchClick = navigateToSearch,
             ) { isBottomSheetVisible = true }
-
-            Spacer(modifier = Modifier.height(Dimens.extraSmallPadding))
 
             MonsterList(
                 monsters = monsters,

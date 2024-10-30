@@ -66,17 +66,16 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMonsterUseCases(
-        monsterRepository: MonsterRepository,
-        monsterDao: MonsterDao
+        monsterRepository: MonsterRepository
     ) : MonsterUseCases {
         return MonsterUseCases(
             getMonsters = GetMonsters(monsterRepository),
             getMonsterByIndex = GetMonsterByIndex(monsterRepository),
             searchMonsters = SearchMonsters(monsterRepository),
-            getFavoriteMonsters = GetFavoriteMonsters(monsterDao),
-            upsertMonster = UpsertMonster(monsterDao),
-            deleteMonster = DeleteMonster(monsterDao),
-            getFavoriteMonsterByIndex = GetFavoriteMonsterByIndex(monsterDao)
+            getFavoriteMonsters = GetFavoriteMonsters(monsterRepository),
+            upsertMonster = UpsertMonster(monsterRepository),
+            deleteMonster = DeleteMonster(monsterRepository),
+            getFavoriteMonsterByIndex = GetFavoriteMonsterByIndex(monsterRepository)
         )
     }
 

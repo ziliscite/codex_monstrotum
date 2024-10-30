@@ -1,13 +1,10 @@
 package com.compose.dungeonsanddragons.presentation.common
 
 import android.content.Context
-import android.util.Log
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.annotation.DrawableRes
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -27,7 +24,8 @@ fun MonsterImage(
     modifier: Modifier = Modifier,
     index: String,
     context: Context,
-    card: Boolean = true
+    card: Boolean = true,
+    @DrawableRes alternativePlaceholder: Int = R.drawable.custom_error_image_detail
 ) {
     var imageUrl by remember {
         mutableStateOf("https://raw.githubusercontent.com/theoperatore/dnd-monster-api/master/src/db/assets/${index}.jpg")
@@ -39,7 +37,7 @@ fun MonsterImage(
         modifier = modifier.clip(MaterialTheme.shapes.small),
         model = ImageRequest.Builder(context)
             .data(imageUrl)
-            .error(if (card) R.drawable.custom_error_image else R.drawable.custom_error_image_detail)
+            .error(if (card) R.drawable.custom_error_image else alternativePlaceholder)
             .crossfade(true)
             .listener(
                 onError = { _, _ ->

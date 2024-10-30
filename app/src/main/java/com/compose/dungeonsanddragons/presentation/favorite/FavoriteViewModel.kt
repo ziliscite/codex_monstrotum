@@ -24,7 +24,7 @@ class FavoriteViewModel @Inject constructor(
     private fun getFavoriteMonsters() {
         monsterUseCases.getFavoriteMonsters().onEach {
             _state.value = state.value.copy(
-                monsters = it
+                monsters = it.asReversed()
             )
         }.launchIn(viewModelScope)
     }

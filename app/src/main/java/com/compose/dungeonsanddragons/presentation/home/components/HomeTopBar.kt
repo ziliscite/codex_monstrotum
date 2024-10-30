@@ -28,7 +28,7 @@ fun HomeTopBar(
         modifier = Modifier.fillMaxWidth(),
         title = {
             Text(
-                text = "Codex Monstrous",
+                text = "Codex Monstrorum",
                 style = MaterialTheme.typography.titleLarge
             )
         },
@@ -39,12 +39,6 @@ fun HomeTopBar(
             actionIconContentColor = MaterialTheme.colorScheme.onBackground
         ),
         actions = {
-            IconButton(onSearchClick) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = null
-                )
-            }
             IconButton(onMenuClick) {
                 Icon(
                     imageVector = Icons.Default.Menu,

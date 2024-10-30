@@ -2,12 +2,13 @@ package com.compose.dungeonsanddragons.domain.usecases.monster
 
 import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.local.room.MonsterDao
+import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetFavoriteMonsterByIndex (
-    private val monsterDao: MonsterDao
+    private val monsterRepository: MonsterRepository
 ) {
     operator fun invoke(index: String): Flow<MonsterEntity> {
-        return monsterDao.getMonsterByIndex(index)
+        return monsterRepository.getFavoriteMonsterByIndex(index)
     }
 }

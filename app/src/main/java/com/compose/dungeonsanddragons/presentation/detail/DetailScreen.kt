@@ -22,6 +22,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import com.compose.dungeonsanddragons.R
 import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.remote.dto.toEntity
 import com.compose.dungeonsanddragons.util.Dimens
@@ -128,7 +129,8 @@ private fun DetailContent(
                 modifier = Modifier.fillMaxSize(),
                 index = monster.index,
                 context = context,
-                card = false
+                card = false,
+                alternativePlaceholder = monster.type.getMonsterImageAlternative()
             )
         }
         Spacer(modifier = Modifier.height(Dimens.smallPaddingOne))
@@ -142,3 +144,35 @@ private fun DetailContent(
         MonsterStats(modifier = Modifier.padding(horizontal = Dimens.extraSmallPadding), monster = monster)
     }
 }
+
+fun String.getMonsterImageAlternative(): Int {
+    val capitalizeType = this.replaceFirstChar { it.uppercase() }
+    return when(capitalizeType) {
+        "Aberration" -> R.drawable.aberration
+        "Beast" -> R.drawable.beast
+        "Celestial" -> R.drawable.celestial
+        "Construct" -> R.drawable.construct
+        "Dragon" -> R.drawable.dragon
+        "Elemental" -> R.drawable.elemental
+        "Fey" -> R.drawable.fey
+        "Fiend" -> R.drawable.fiend
+        "Giant" -> R.drawable.giant
+        "Humanoid" -> R.drawable.humanoid
+        "Monstrosity" -> R.drawable.monstrosity
+        "Ooze" -> R.drawable.ooze
+        "Plant" -> R.drawable.plant
+        "Undead" -> R.drawable.undead
+        else -> R.drawable.custom_error_image_detail
+    }
+}
+
+
+
+
+
+
+
+
+
+
+

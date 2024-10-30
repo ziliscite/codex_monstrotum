@@ -4,6 +4,8 @@ import android.util.Log
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
+import com.compose.dungeonsanddragons.data.local.room.MonsterDao
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.data.remote.dto.ResultsItem
 import com.compose.dungeonsanddragons.data.remote.service.MonsterApi
@@ -17,7 +19,8 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class MonsterRepositoryImpl @Inject constructor(
-    private val monsterApi: MonsterApi
+    private val monsterApi: MonsterApi,
+    private val monsterDao: MonsterDao
 ) : MonsterRepository{
     override fun getMonsterByIndex(index: String): Flow<MonsterResult<Monster>> = flow {
         emit(MonsterResult.Loading)
@@ -48,23 +51,9 @@ class MonsterRepositoryImpl @Inject constructor(
             }
         ).flow
     }
-}
 
-//private suspend fun <T> handleErrors(call: suspend () -> T): MonsterResult<T> {
-//    return try {
-//        val response = call()
-//        MonsterResult.Success(response)
-//    } catch (e: IOException) {
-//        MonsterResult.Failed("No internet connection. Please check your network.")
-//    } catch (e: HttpException) {
-//        MonsterResult.Failed("Server error: ${e.code()}. Please try again later.")
-//    } catch (e: TimeoutException) {
-//        MonsterResult.Failed("Request timed out. Consider checking your connection.")
-//    } catch (e: JsonParseException) {
-//        MonsterResult.Failed("Data parsing issue. Try refreshing the app.")
-//    } catch (e: NoSuchElementException) {
-//        MonsterResult.Failed(e.message ?: "No monsters found")
-//    } catch (e: Exception) {
-//        MonsterResult.Failed("Unexpected error: ${e.localizedMessage ?: "Unknown error"}")
-//    }
-//}
+    override fun getFavoriteMonsters(): Flow<List<MonsterEntity>> = monsterDao.getMonsters()
+    override fun getFavoriteMonsterByIndex(index: String): Flow<MonsterEntity> = monsterDao.getMonsterByIndex(index)
+    override suspend fun upsert(monster: MonsterEntity) = monsterDao.upsert(monster)
+    override suspend fun deleteMonster(index: String) = monsterDao.deleteMonster(index)
+}

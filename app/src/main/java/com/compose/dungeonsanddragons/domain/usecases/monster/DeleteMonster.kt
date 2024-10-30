@@ -1,11 +1,11 @@
 package com.compose.dungeonsanddragons.domain.usecases.monster
 
-import com.compose.dungeonsanddragons.data.local.room.MonsterDao
+import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
 
 class DeleteMonster(
-    private val monsterDao: MonsterDao
+    private val monsterRepository: MonsterRepository
 ) {
     suspend operator fun invoke(index: String) {
-        monsterDao.deleteMonster(index)
+        monsterRepository.deleteMonster(index)
     }
 }

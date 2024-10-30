@@ -4,15 +4,16 @@ import com.compose.dungeonsanddragons.data.local.dto.MonsterEntity
 import com.compose.dungeonsanddragons.data.local.room.MonsterDao
 import com.compose.dungeonsanddragons.data.remote.dto.Monster
 import com.compose.dungeonsanddragons.data.remote.dto.toEntity
+import com.compose.dungeonsanddragons.domain.repository.MonsterRepository
 
 class UpsertMonster(
-    private val monsterDao: MonsterDao
+    private val monsterRepository: MonsterRepository
 ) {
     suspend operator fun invoke(monster: MonsterEntity) {
-        monsterDao.upsert(monster)
+        monsterRepository.upsert(monster)
     }
 
     suspend operator fun invoke(monster: Monster) {
-        monsterDao.upsert(monster.toEntity())
+        monsterRepository.upsert(monster.toEntity())
     }
 }
