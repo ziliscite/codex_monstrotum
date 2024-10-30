@@ -1,8 +1,10 @@
 package com.compose.dungeonsanddragons.presentation.common
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -12,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.LoadState
@@ -30,25 +33,101 @@ fun MonsterList(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            modifier = modifier
-                .padding(Dimens.extraSmallPadding)
-                .fillMaxSize()
-        ) {
-            items(count = monsters.size) {
-                monsters[it].let { monster ->
-                    MonsterCard(
-                        monster = monster,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Dimens.extraSmallPadding),
-                        onClick = {
-                            onClick(monster.index)
-                        }
-                    )
+        if (monsters.isEmpty()) {
+            EmptyScreen(errorString = "You haven't saved any monster so far!")
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier
+                    .padding(Dimens.extraSmallPadding)
+                    .fillMaxSize()
+            ) {
+                items(count = monsters.size) {
+                    monsters[it].let { monster ->
+                        MonsterCard(
+                            monster = monster,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(Dimens.extraSmallPadding),
+                            onClick = {
+                                onClick(monster.index)
+                            }
+                        )
+                    }
+                }
+
+                if (monsters.size % 2 == 0) {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                } else {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun MonsterList(
+    modifier: Modifier = Modifier,
+    monsters: LazyPagingItems<ResultsItem>,
+    onClick: (String) -> Unit,
+    isSearch: Boolean = false
+) {
+    val (isReady, isError) = handlePagingResult(monsters = monsters)
+    val isFirstLoadComplete = remember {
+        mutableStateOf(false)
+    }
+
+    if (isReady && !isFirstLoadComplete.value) {
+        isFirstLoadComplete.value = true
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        if (isReady) {
+            LazyVerticalGrid(
+                columns = GridCells.Fixed(2),
+                modifier = modifier
+                    .padding(Dimens.extraSmallPadding)
+                    .fillMaxSize()
+            ) {
+                items(count = monsters.itemCount) {
+                    monsters[it]?.let { monster ->
+                        MonsterCard(
+                            monster = monster,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(Dimens.extraSmallPadding),
+                            onClick = {
+                                onClick(monster.index)
+                            }
+                        )
+                    }
+                }
+                if (monsters.itemCount % 2 == 0) {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                } else {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                }
+            }
+        } else if(isError != null) {
+            EmptyScreen(isError)
         }
     }
 }
@@ -77,8 +156,8 @@ fun MonsterList(
                 CodexSnackbar(
                     modifier = Modifier
                         .padding(Dimens.smallPaddingOne)
-                        .align(Alignment.BottomCenter)
-                        .zIndex(1f),
+                        .align(Alignment.TopCenter)
+                        .zIndex(5f),
                     message = isError.error.message.toString()
                 ) {
                     monsters.refresh()
@@ -104,9 +183,23 @@ fun MonsterList(
                         )
                     }
                 }
+                if (monsters.itemCount % 2 == 0) {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                } else {
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                    item {
+                        Spacer(modifier = Modifier.height(100.dp))
+                    }
+                }
             }
         } else if(isError != null) {
-            EmptyScreen(isError)
+            EmptyScreen(isError) {
+                monsters.refresh()
+            }
         }
     }
 }

@@ -37,7 +37,6 @@ fun CodexSnackbar(
                         snackbarData.dismiss()
                     }) {
                         Text(
-                            color = MaterialTheme.colorScheme.onBackground,
                             text = snackbarData.visuals.actionLabel ?: "",
                             fontSize = MaterialTheme.typography.bodySmall.fontSize
                         )

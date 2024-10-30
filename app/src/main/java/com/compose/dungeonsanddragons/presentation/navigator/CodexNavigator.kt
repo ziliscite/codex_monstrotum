@@ -11,6 +11,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -116,7 +117,8 @@ fun CodexNavigator(
             ) {
                 val viewModel = hiltViewModel<HomeViewModel>()
                 val monsters = viewModel.monsters.collectAsLazyPagingItems()
-                HomeScreen(monsters, navigateToSearch = {
+                HomeScreen(
+                    monsters = monsters, navigateToSearch = {
                     navigateToScreen(navController, Route.SearchScreen.route)
                 }) { monsterIndex ->
                     navigateToScreen(navController, Route.DetailsScreen.route + "/$monsterIndex")

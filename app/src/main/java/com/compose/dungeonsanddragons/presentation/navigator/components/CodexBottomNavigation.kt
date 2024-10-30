@@ -5,6 +5,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -60,6 +61,11 @@ fun CodexBottomNavigation(
                 .align(Alignment.BottomCenter)
                 .background(
                     color = backgroundColor
+                )
+                .border(
+                    width = 2.dp,
+                    color = if (visibility == 1f) MaterialTheme.colorScheme.onSurface.copy(alpha = 0.2f) else backgroundColor.copy(visibility),
+                    shape = RoundedCornerShape(Dimens.monsterCardSize.first / 2)
                 )
                 .padding(horizontal = 16.dp)
                 .alpha(visibility),

@@ -4,14 +4,19 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color.Companion.DarkGray
 import androidx.compose.ui.graphics.Color.Companion.LightGray
+import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,18 +41,16 @@ import com.compose.dungeonsanddragons.R
 import com.compose.dungeonsanddragons.ui.theme.DungeonsAndDragonsTheme
 
 @Composable
-fun EmptyScreen(error: LoadState.Error? = null, errorString: String? = null) {
-    var message by remember {
+fun EmptyScreen(
+    error: LoadState.Error? = null,
+    errorString: String? = null
+) {
+    val message by remember {
         mutableStateOf(if (error != null) parseErrorMessage(error) else parseErrorString(errorString))
     }
 
-    var icon by remember {
+    val icon by remember {
         mutableIntStateOf(R.drawable.error_page)
-    }
-
-    if (error == null){
-        message = "You have not saved any monster so far!"
-        icon = R.drawable.ic_search_document
     }
 
     var startAnimation by remember {
@@ -66,31 +70,52 @@ fun EmptyScreen(error: LoadState.Error? = null, errorString: String? = null) {
 }
 
 @Composable
-fun EmptyContent(alphaAnim: Float, message: String, iconId: Int) {
+fun EmptyScreen(
+    error: LoadState.Error? = null,
+    errorString: String? = null,
+    onRefreshClick: () -> Unit
+) {
+    val message by remember {
+        mutableStateOf(if (error != null) parseErrorMessage(error) else parseErrorString(errorString))
+    }
+
+    val icon by remember {
+        mutableIntStateOf(R.drawable.error_page)
+    }
+
+    var startAnimation by remember {
+        mutableStateOf(false)
+    }
+
+    val alphaAnimation by animateFloatAsState(
+        targetValue = if (startAnimation) 0.6f else 0f,
+        animationSpec = tween(durationMillis = 1000), label = ""
+    )
+
+    LaunchedEffect(key1 = true) {
+        startAnimation = true
+    }
+
+    EmptyContent(modifier = Modifier.padding(bottom = 10.dp), alphaAnim = alphaAnimation, message = message, iconId = icon, refreshable = true) {
+        onRefreshClick()
+    }
+}
+
+@Composable
+fun EmptyContent(modifier: Modifier = Modifier, alphaAnim: Float, message: String, iconId: Int, refreshable: Boolean = false, onRefreshClick: () -> Unit = {}) {
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        if (iconId == R.drawable.error_page) {
-            Image(
-                painter = painterResource(id = iconId),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(320.dp)
-                    .alpha(alphaAnim)
-            )
-        } else {
-            Icon(
-                painter = painterResource(id = iconId),
-                contentDescription = null,
-                tint = if (isSystemInDarkTheme()) LightGray else DarkGray,
-                modifier = Modifier
-                    .size(120.dp)
-                    .alpha(alphaAnim)
-            )
-        }
-
+        Image(
+            modifier = Modifier
+                .size(320.dp)
+                .alpha(alphaAnim)
+                .clickable { onRefreshClick() },
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+        )
         Text(
             modifier = Modifier
                 .padding(5.dp)
@@ -101,6 +126,18 @@ fun EmptyContent(alphaAnim: Float, message: String, iconId: Int) {
             style = MaterialTheme.typography.bodyLarge,
             color = if (isSystemInDarkTheme()) LightGray else DarkGray,
         )
+        if (refreshable) {
+            Text(
+                modifier = Modifier
+                    .padding(5.dp)
+                    .alpha(alphaAnim)
+                    .fillMaxWidth(0.7f),
+                text = "Click me to refresh",
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
+                color = if (isSystemInDarkTheme()) LightGray else DarkGray,
+            )
+        }
     }
 }
 
@@ -113,11 +150,10 @@ fun parseErrorString(errorString: String?): String {
     return errorString ?: "Something went wrong."
 }
 
-@Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun EmptyScreenPreview() {
     DungeonsAndDragonsTheme {
-        EmptyContent(alphaAnim = 0.3f, message = "The scrolls are jumbled. Try refreshing to decipher the runes.", R.drawable.error_page)
+        EmptyScreen(errorString = "Try refreshing to decipher the runes.") {}
     }
 }
